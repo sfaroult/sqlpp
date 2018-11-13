@@ -10,7 +10,7 @@
 #include <ctype.h>
 #include <errno.h>
 
-#define OPTIONS "dD:"
+#define OPTIONS "?hdD:"
 
 #define LINELEN     2048
 #define STACKSZ      100
@@ -427,6 +427,38 @@ int main(int argc, char **argv) {
 
     while ((ch = getopt(argc, argv, OPTIONS)) != -1) {
       switch (ch) {
+        case '?' :
+        case 'h' :
+             fprintf(stdout,
+                     "sqlpp is a utility for pre-processing SQL scripts.\n");
+             fprintf(stdout,
+             "Its purpose is to allow multiple DBMS-specific DDL syntax inside"
+                     " a single script.\n");
+             fprintf(stdout,
+                     "Usage: %s -D symbol [ -D symbol ...]\n", argv[0]);
+             fprintf(stdout,
+                     "Symbols are simple tags that comment/uncomment "
+                     "lines in an SQL script.\n");
+             fprintf(stdout,
+                     "In the script control is performed using:\n");
+             fprintf(stdout, "--ifdef <symbol expression>\n");
+             fprintf(stdout, "--ifndef <symbol expression>\n");
+             fprintf(stdout, "--else\n");
+             fprintf(stdout, "--endif\n");
+             fprintf(stdout,
+                 "\nA symbol expression is a single symbol or a logical\n");
+             fprintf(stdout,
+              "expression combining symbols with AND, OR, and parentheses.\n");
+             fprintf(stdout,
+                     "\nSymbols can also be controlled in the script using:\n");
+             fprintf(stdout, "--define <symbol>\n");
+             fprintf(stdout, "--undef <symbol>\n");
+             fprintf(stdout,
+                     "\nLines that can be uncommented must start with --#\n");
+             fprintf(stdout,
+                     "(regular comments are left untouched)\n");
+             exit(0);
+             break; // Not reached
         case 'd' :
              G_debug = 1;
              fprintf(stderr, "--- Debug mode on\n");
